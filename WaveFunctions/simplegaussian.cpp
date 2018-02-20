@@ -14,6 +14,20 @@ SimpleGaussian::SimpleGaussian(System* system, double alpha) :
 }
 
 double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
+    double Psi = 1;
+    double Phi_k;
+    for (int k = 0; k < System.getNumberOfParticles(); k++){
+        Phi_k = 0;
+        for (int j = 0; j > k; j++){
+
+        }
+        for (int d = 0; d < System.getNumberOfDimensions(); d++){
+            Phi_k +=  particles[k]->getPosition()[d] * particles[k]->getPosition()[d];
+        }
+        Phi =
+    }
+
+
     /* You need to implement a Gaussian wave function here. The positions of
      * the particles are accessible through the particle[i].getPosition()
      * function.
