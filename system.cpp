@@ -8,6 +8,8 @@
 #include "Math/random.h"
 
 bool System::metropolisStep() {
+
+
     /* Perform the actual Metropolis step: Choose a particle at random and
      * change it's position by a random amount, and check if the step is
      * accepted by the Metropolis test (compare the wave function evaluated
