@@ -16,16 +16,28 @@ SimpleGaussian::SimpleGaussian(System* system, double alpha) :
 double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
     double Psi = 1;
     double Phi_k;
+    double R_kj;
+    double R_kj_2;
+    double f;
     for (int k = 0; k < System.getNumberOfParticles(); k++){
         Phi_k = 0;
-        for (int j = 0; j > k; j++){
-
+        R_kj_2 = 0;
+        f = 1;
+        for (int j = k+1; j < System.getNumberOfParticles(); j++){
+            for (int d = 0; d < System.getNumberOfDimensions(); d++){
+                R_kj=  particles[j]->getPosition()[d] - particles[k]->getPosition()[d];
+                R_kj_2 += R_ij * R_ij;
+            }
+            R_kj = sqrt(R_kj_2);  //Really only need R_kj, faster way to do this?
+            f *= (1 - a / R_kj) * (R_kj > a); //Last part returns 0 or 1 if statement is true (think so)
         }
         for (int d = 0; d < System.getNumberOfDimensions(); d++){
-            Phi_k +=  particles[k]->getPosition()[d] * particles[k]->getPosition()[d];
+            Phi_k +=  (particles[k]->getPosition()[d] * particles[k]->getPosition()[d]); //Add the (1, 1, beta) parameter here
         }
-        Phi =
+        Phi_k = exp(-getParameters() * Phi_k);
+        Psi = Phi_k * f;
     }
+    return Psi;
 
 
     /* You need to implement a Gaussian wave function here. The positions of
@@ -35,7 +47,6 @@ double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
      * For the actual expression, use exp(-alpha * r^2), with alpha being the
      * (only) variational parameter.
      */
-    return 0;
 }
 
 double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> particles) {
